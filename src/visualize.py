@@ -36,10 +36,12 @@ def generate_visualizations(events: list[dict[str, Any]], output_dir: Path) -> l
         figures[2],
         "Top Event Importance Ranking",
         [
-            (shorten(event["event_name"], 42), event["importance"]["total_score"])
+            (shorten_display(event["event_name"], 40), event["importance"]["total_score"])
             for event in sorted_events[:10]
         ],
         x_label="Importance Score",
+        width=1160,
+        left=470,
     )
     write_bar_chart(
         figures[3],
@@ -68,10 +70,16 @@ def count_values(values: Any) -> list[tuple[str, int]]:
     return sorted(Counter(values).items(), key=lambda item: (-item[1], item[0]))
 
 
-def write_bar_chart(path: Path, title: str, rows: list[tuple[str, int]], x_label: str) -> None:
-    width = 980
+def write_bar_chart(
+    path: Path,
+    title: str,
+    rows: list[tuple[str, int]],
+    x_label: str,
+    *,
+    width: int = 980,
+    left: int = 290,
+) -> None:
     row_height = 42
-    left = 290
     right = 72
     top = 92
     bottom = 74
@@ -92,7 +100,7 @@ def write_bar_chart(path: Path, title: str, rows: list[tuple[str, int]], x_label
         color = PALETTE[index % len(PALETTE)]
         parts.extend(
             [
-                f'<text x="32" y="{y + 24}" class="label">{escape(label)}</text>',
+                f'<text x="{left - 16}" y="{y + 24}" class="label" text-anchor="end">{escape(label)}</text>',
                 f'<rect x="{left}" y="{y}" width="{bar_width}" height="26" rx="7" fill="{color}"/>',
                 f'<text x="{left + bar_width + 10}" y="{y + 19}" class="value">{value}</text>',
             ]
@@ -122,7 +130,24 @@ def escape(value: str) -> str:
     return html.escape(str(value), quote=True)
 
 
-def shorten(value: str, max_length: int) -> str:
-    if len(value) <= max_length:
+def shorten_display(value: str, max_columns: int) -> str:
+    if display_width(value) <= max_columns:
         return value
-    return value[: max_length - 1] + "…"
+
+    output = []
+    used = 0
+    for char in value:
+        char_width = 2 if is_wide_char(char) else 1
+        if used + char_width > max_columns - 1:
+            break
+        output.append(char)
+        used += char_width
+    return "".join(output).rstrip() + "…"
+
+
+def display_width(value: str) -> int:
+    return sum(2 if is_wide_char(char) else 1 for char in value)
+
+
+def is_wide_char(char: str) -> bool:
+    return ord(char) > 127

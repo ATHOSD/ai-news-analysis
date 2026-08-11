@@ -153,10 +153,10 @@ OPENROUTER_SITE_URL=http://localhost
 
 完整运行后，产物位于 `data/processed/`：
 
-- `normalized_data.json`：标准化新闻事实记录。
-- `structured_data.json`：事件级结构化数据。
-- `daily_report.md`：最终 AI 新闻日报。
-- `figures/`：日报中嵌入的 SVG 可视化图表。
+- [normalized_data.json](data/processed/normalized_data.json)：标准化新闻事实记录。
+- [structured_data.json](data/processed/structured_data.json)：事件级结构化数据。
+- [daily_report.md](data/processed/daily_report.md)：最终 AI 新闻日报。
+- [figures/](data/processed/figures/)：日报中嵌入的 SVG 可视化图表。
 
 ## 注意事项
 

@@ -1,18 +1,18 @@
 # AI News Analysis
 
-这是一个基于 LLM agent 的 AI 新闻日报生成系统。它从一批原始新闻出发，先把新闻标准化成可处理的事实记录，再抽取事件级结构化数据，最后生成一份带重点事件分析和可视化图表的 AI 舆情日报。
+An LLM-orchestrated pipeline for generating an AI industry daily briefing from raw news records. The system converts raw news into normalized fact records, extracts event-level structured data, generates an evidence-backed Markdown report, and renders deterministic visualizations from the structured event layer.
 
-项目的核心目标不是简单“让模型写一篇总结”，而是把日报生成拆成一条可追踪、可校验、可复用的 pipeline：
+The pipeline is designed around a clear separation between semantic tasks handled by the LLM and deterministic tasks handled by code:
 
 ```text
-raw news
--> normalized fact records
--> structured events
--> daily report
--> visualizations
+data/raw/raw_news.json
+  -> data/processed/normalized_data.json
+  -> data/processed/structured_data.json
+  -> data/processed/daily_report.md
+  -> data/processed/figures/*.svg
 ```
 
-## 项目结构
+## Architecture
 
 ```text
 ai-news-analysis/
@@ -38,94 +38,95 @@ ai-news-analysis/
 └── run.sh
 ```
 
-其中：
+Key components:
 
-- `data/raw/raw_news.json` 是最原始的新闻输入数据。
-- `agent/SKILL.md` 定义整个 agent 的工作流、输入输出路径和执行顺序。
-- `agent/prompts/` 放三段 LLM 任务 prompt，分别负责标准化、结构化抽取和日报生成。
-- `agent/schema.json` 定义最终事件级结构化数据的字段。
-- `src/agent.py` 是 pipeline 的主入口，负责读取 skill、读取 prompt、调用 LLM、校验输出和写文件。
-- `src/visualize.py` 根据结构化事件数据生成 SVG 可视化图表。
+- `agent/SKILL.md` defines the workflow contract, step order, input/output paths, and execution boundaries.
+- `agent/prompts/` contains task-specific LLM instructions for normalization, event extraction, and report generation.
+- `agent/schema.json` defines the target event-level JSON structure used by downstream analysis.
+- `src/agent.py` is the orchestrator. It reads the skill definition, loads prompts and data, calls the LLM, validates outputs, and writes artifacts.
+- `src/visualize.py` renders SVG charts directly from `structured_data.json` without additional LLM calls.
 
-## Pipeline 说明
+## Execution Flow
 
-### 1. 原始新闻输入
+### 1. Raw News Ingestion
 
-输入文件是：
+Input:
 
 ```text
 data/raw/raw_news.json
 ```
 
-每条新闻包含标题、来源、URL、发布时间和正文摘要等字段。这个文件只保存原始新闻内容，不做事件合并、不做重要性打分，也不写日报分析。
+The raw layer stores source-grounded news records with metadata such as `news_id`, `title`, `source`, `url`, `published_at`, and `content`. This layer does not perform event merging, scoring, or analysis.
 
-### 2. 新闻标准化
+### 2. News Normalization
 
-第一步使用：
+Prompt:
 
 ```text
 agent/prompts/normalize_news.md
 ```
 
-LLM 会把每条 raw news 转成更稳定的事实记录，输出到：
+Output:
 
 ```text
 data/processed/normalized_data.json
 ```
 
-这一步的作用不是简单压缩，而是把不同来源、不同写法的新闻整理成统一格式，包括：
+This step converts heterogeneous raw news records into consistent fact records. Each normalized item preserves source metadata and adds:
 
 - `standardized_summary`
 - `key_facts`
 - `evidence_snippets`
 
-这样后续结构化抽取时可以更稳定，也更容易追溯证据。
+The purpose of this layer is to reduce noise and provide a stable factual substrate for event extraction.
 
-### 3. 事件级结构化抽取
+### 3. Event-Level Structured Extraction
 
-第二步使用：
+Prompt and schema:
 
 ```text
 agent/prompts/extract_structured_data.md
 agent/schema.json
 ```
 
-LLM 会从标准化新闻中抽取事件，并把多条描述同一件事的新闻合并成一个事件。例如，三篇不同媒体关于 Anthropic Claude 水印的新闻，应该合并成一个“Anthropic 为 Claude 推出水印能力”的事件。
-
-输出文件是：
+Output:
 
 ```text
 data/processed/structured_data.json
 ```
 
-这里的结构化单位是 **event**，不是 article。每个事件包含：
+The structured layer uses events as the core unit, not articles. Multiple news records may be merged into one event through `source_news_ids` when they describe the same actor, action, and result.
 
-- 事件名和事件描述；
-- 事件类型和主题；
-- 涉及实体；
-- 支撑该事件的 `source_news_ids`；
-- 关键点；
-- 重要性分数；
-- 风险或机会信号；
-- 证据片段。
+Each event contains:
 
-### 4. 日报生成
+- event identity, name, date, and description;
+- event type and topic classification;
+- involved entities;
+- source news references;
+- key points and evidence;
+- importance scores;
+- risk/opportunity signals;
+- downstream explanation fields.
 
-第三步使用：
+This structure is the main data contract for reporting and visualization.
+
+### 4. Daily Report Generation
+
+Prompt:
 
 ```text
 agent/prompts/generate_daily_report.md
 ```
 
-日报只基于 `structured_data.json` 生成，不直接读取 raw news。这样可以保证日报的分析来自已经结构化、可追溯的事件数据，而不是模型临时自由发挥。
-
-输出文件是：
+Output:
 
 ```text
 data/processed/daily_report.md
 ```
 
-当前日报结构是：
+The report is generated only from `structured_data.json`, not from raw news. Before calling the LLM, `agent.py` computes deterministic metadata such as event count, date range, event type distribution, topic distribution, signal counts, and top-event ordering. This prevents the model from manually recounting or re-sorting structured data.
+
+Current report order:
 
 ```text
 今日一句话判断
@@ -136,23 +137,17 @@ Top 3 重要事件
 可视化图表
 ```
 
-其中事件总数、类型分布、主题分布、信号统计和 Top 事件排序由代码确定性计算，再提供给 LLM 写报告，避免模型自己数错。
+`agent.py` also applies a post-processing step to enforce the report order, keep exactly three top events, and align the deep-analysis section with those same three events.
 
-### 5. 可视化生成
+### 5. Visualization
 
-最后一步由代码完成，不调用 LLM：
+Script:
 
 ```text
 src/visualize.py
 ```
 
-它读取：
-
-```text
-data/processed/structured_data.json
-```
-
-并输出四张 SVG 图表：
+Outputs:
 
 ```text
 data/processed/figures/event_type_distribution.svg
@@ -161,61 +156,57 @@ data/processed/figures/importance_ranking.svg
 data/processed/figures/signal_counts.svg
 ```
 
-这些图表会自动嵌入到 `daily_report.md` 的可视化部分。
+Visualizations are generated deterministically from `structured_data.json` and embedded into the Markdown report. The implementation uses pure Python SVG rendering, so no plotting library is required.
 
-## Agent 如何工作
+## Agent Design
 
-真实 LLM 不会自己读取本地文件，也不会自己写文件。实际流程是：
+The LLM does not directly access local files or write outputs. File I/O and orchestration are handled by `src/agent.py`:
 
 ```text
-agent.py 读取 SKILL.md
-agent.py 根据 SKILL.md 找到 prompt 和数据路径
-agent.py 读取本地 JSON 和 prompt
-agent.py 把 prompt 内容和输入数据发送给 LLM
-LLM 返回 JSON 或 Markdown
-agent.py 解析、校验并写入 data/processed/
+read SKILL.md
+-> resolve input/output paths and prompt routing
+-> read prompt file and JSON input
+-> call the LLM API
+-> parse and validate response
+-> write processed artifact
 ```
 
-也就是说：
+This design keeps `SKILL.md` as the reusable workflow specification while keeping each LLM call focused on one task-specific prompt.
 
-- `SKILL.md` 是 agent 的工作流说明书。
-- `prompts/*.md` 是每次 LLM 调用的具体任务说明。
-- `agent.py` 是真正执行文件读写、调用 LLM 和组织 pipeline 的程序。
+## LLM Boundary
 
-## LLM 与代码的分工
+LLM responsibilities:
 
-LLM 负责语义判断：
+- normalize source-grounded facts;
+- identify and merge event-level records;
+- extract entities and classifications;
+- assign and explain importance scores;
+- write the final daily briefing.
 
-- 提取关键事实；
-- 判断哪些新闻描述同一事件；
-- 抽取实体、事件类型和主题；
-- 解释事件重要性；
-- 生成日报文本。
+Deterministic code responsibilities:
 
-代码负责确定性工作：
+- local file reads and writes;
+- prompt routing;
+- LLM API calls;
+- JSON parsing;
+- schema-oriented validation;
+- `total_score` correction;
+- event sorting;
+- aggregate statistics;
+- report section post-processing;
+- SVG visualization rendering.
 
-- 读取本地文件；
-- 读取 prompt；
-- 调用 LLM API；
-- 解析 JSON；
-- 校验字段；
-- 修正 `total_score`；
-- 排序 Top 事件；
-- 计算数据统计；
-- 生成可视化图表；
-- 写入输出文件。
+This separation improves traceability and reduces the chance that the final report bypasses the structured data layer.
 
-这样设计可以减少幻觉，也方便调试。
+## Configuration
 
-## 如何运行
-
-先准备 `.env`：
+Create a local `.env` file:
 
 ```bash
 cp .env.example .env
 ```
 
-然后在 `.env` 中填写自己的 LLM 配置：
+Example OpenRouter-compatible configuration:
 
 ```bash
 LLM_API_KEY=your-api-key
@@ -225,19 +216,23 @@ OPENROUTER_APP_NAME=ai-news-analysis
 OPENROUTER_SITE_URL=http://localhost
 ```
 
-一键运行完整 pipeline：
+`.env` is excluded from git and should not be committed.
+
+## Usage
+
+Run the full pipeline:
 
 ```bash
 ./run.sh
 ```
 
-如果只想验证流程、不调用真实 LLM，可以运行：
+Run without making LLM API calls:
 
 ```bash
 ./run.sh --dry-run
 ```
 
-也可以单独运行某一步：
+Run individual stages:
 
 ```bash
 ./run.sh --step normalize
@@ -246,34 +241,34 @@ OPENROUTER_SITE_URL=http://localhost
 ./run.sh --step visualize
 ```
 
-## 输出结果
+## Outputs
 
-完整运行后，主要输出在：
+Primary generated artifacts:
 
-```text
-data/processed/
-```
+- `data/processed/normalized_data.json`
+- `data/processed/structured_data.json`
+- `data/processed/daily_report.md`
+- `data/processed/figures/*.svg`
 
-包括：
+The repository includes a sample processed output so the report structure and visualization artifacts can be inspected without rerunning the LLM pipeline.
 
-- `normalized_data.json`：标准化新闻事实记录；
-- `structured_data.json`：事件级结构化数据；
-- `daily_report.md`：最终日报；
-- `figures/`：日报中使用的可视化图表。
+## Validation And Reproducibility
 
-## 设计亮点
+The pipeline includes several lightweight safeguards:
 
-- 使用 `SKILL.md` 定义 agent workflow，而不是把流程只藏在代码里。
-- 每个 LLM 任务都有独立 prompt，职责清晰。
-- 结构化数据以事件为粒度，而不是以新闻文章为粒度。
-- 日报只基于结构化数据生成，保证分析可追溯。
-- 数据统计和排序由代码完成，降低 LLM 计算错误。
-- 可视化由代码生成，不额外消耗 LLM token。
-- 支持 `--dry-run`，没有 API key 时也能验证完整 pipeline。
+- required-field checks for normalized records;
+- enum checks for event type, topic, and signals;
+- source ID validation against known raw news IDs;
+- deterministic correction of `importance.total_score`;
+- deterministic sorting for top-event selection;
+- deterministic aggregation for report metadata;
+- dry-run mode for local workflow verification.
 
-## 注意事项
+Because event merging and scoring depend on model judgment, different models may produce slightly different event counts. The schema and validation layer keep the output shape stable even when model-level semantic decisions vary.
 
-- `.env` 中包含 API key，不要提交到公开仓库。
-- 当前 raw news 使用的是带来源 URL 的新闻摘要，不复制完整新闻正文。
-- 不同模型对事件合并的判断可能不同，因此 `structured_data.json` 的事件数量可能随模型略有变化。
-- 如果要提高事件合并质量，可以使用更强的模型或继续加强 `extract_structured_data.md` 的合并规则。
+## Notes
+
+- Raw news records use source-grounded summaries and URLs rather than full article copies.
+- `structured_data.json` is intentionally event-level; article-level duplication should be resolved during extraction.
+- Visualization is downstream of structured data and does not require additional LLM tokens.
+- For higher event-merging quality, use a stronger model or refine `extract_structured_data.md`.

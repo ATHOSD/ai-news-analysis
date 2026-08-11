@@ -358,11 +358,10 @@ def reorder_report_sections(markdown: str) -> str:
         "Top 3-5 重要事件",
         "Top 3 重要事件",
         "重要事件深度分析",
-        "数据概览",
         "结构化事件表",
         "可视化图表",
     ]
-    skip_sections = {"趋势判断", "风险与机会提示"}
+    skip_sections = {"数据概览", "趋势判断", "风险与机会提示"}
 
     output = [title.strip() or "# AI 舆情分析日报"]
     used = set()

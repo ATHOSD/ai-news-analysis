@@ -68,39 +68,6 @@
   - 其他头部厂商是否跟进开放权重策略；
   - 开放权重模型是否引发新的监管或责任认定要求。
 
-## 数据概览
-
-- **统计周期**：2026-08-05 至 2026-08-11
-- **事件总数**：17（按 `metadata.event_count`）
-- **事件类型分布**：
-  - `security_analysis`：3
-  - `product_update`：3
-  - `ai_infrastructure`：2
-  - `policy_regulation`：2
-  - `business_restructuring`：2
-  - `open_source`、`agent_platform`、`security_incident`、`research`、`market_competition`：各 1
-- **主题分布**：
-  - AI cybersecurity：4
-  - AI policy：3
-  - AI business：3
-  - AI infrastructure：2
-  - open-source ecosystem、voice AI、AI agent、model capability、enterprise AI：各 1
-- **信号分布**：
-  - `agent_governance`、`competition`：各 8
-  - `security_risk`：7
-  - `regulatory_pressure`、`developer_opportunity`、`business_model_shift`：各 5
-  - `enterprise_adoption`：4
-  - `defense_opportunity`：3
-  - `supply_chain_risk`：2
-  - `open_source_momentum`、`cost_reduction`、`cost_pressure`、`technical_breakthrough`：各 1
-- **重点观察**：安全风险、Agent 治理和竞争信号占据主导，说明本周期的核心矛盾已从单纯模型能力竞争，扩展到自主执行边界、基础设施供给和监管可接受性。
-
-如需配套图表，建议展示：
-1. 事件类型分布；
-2. 主题分布；
-3. 重要性排名；
-4. 风险与机会信号数量，其中应突出 `agent_governance`、`competition` 和 `security_risk`。
-
 ## 结构化事件表
 
 | 事件 ID | 日期 | 事件 | 类型 | 主题 | 重要性 | 主要信号 | 来源 |

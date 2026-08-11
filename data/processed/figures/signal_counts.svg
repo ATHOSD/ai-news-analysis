@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="712" viewBox="0 0 980 712">
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="670" viewBox="0 0 980 670">
 <style>
   .bg { fill: #f8fafc; }
   .title { font: 700 26px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
@@ -7,47 +7,44 @@
   .axis { font: 500 13px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #64748b; }
   .grid-strong { stroke: #cbd5e1; stroke-width: 1.2; }
 </style>
-<rect class="bg" x="0" y="0" width="980" height="712" rx="24"/>
+<rect class="bg" x="0" y="0" width="980" height="670" rx="24"/>
 <text x="32" y="44" class="title">Risk And Opportunity Signals</text>
-<text x="290" y="684" class="axis">Mentions</text>
-<line x1="290" y1="68" x2="290" y2="654" class="grid-strong"/>
-<text x="274" y="116" class="label" text-anchor="end">agent_governance</text>
+<text x="290" y="642" class="axis">Mentions</text>
+<line x1="290" y1="68" x2="290" y2="612" class="grid-strong"/>
+<text x="274" y="116" class="label" text-anchor="end">competition</text>
 <rect x="290" y="92" width="618" height="26" rx="7" fill="#2563eb"/>
-<text x="918" y="111" class="value">8</text>
-<text x="274" y="158" class="label" text-anchor="end">competition</text>
-<rect x="290" y="134" width="618" height="26" rx="7" fill="#0891b2"/>
-<text x="918" y="153" class="value">8</text>
-<text x="274" y="200" class="label" text-anchor="end">security_risk</text>
-<rect x="290" y="176" width="540" height="26" rx="7" fill="#16a34a"/>
-<text x="840" y="195" class="value">7</text>
-<text x="274" y="242" class="label" text-anchor="end">business_model_shift</text>
-<rect x="290" y="218" width="386" height="26" rx="7" fill="#f59e0b"/>
-<text x="686" y="237" class="value">5</text>
-<text x="274" y="284" class="label" text-anchor="end">developer_opportunity</text>
-<rect x="290" y="260" width="386" height="26" rx="7" fill="#ef4444"/>
-<text x="686" y="279" class="value">5</text>
-<text x="274" y="326" class="label" text-anchor="end">regulatory_pressure</text>
-<rect x="290" y="302" width="386" height="26" rx="7" fill="#7c3aed"/>
-<text x="686" y="321" class="value">5</text>
-<text x="274" y="368" class="label" text-anchor="end">enterprise_adoption</text>
-<rect x="290" y="344" width="309" height="26" rx="7" fill="#db2777"/>
-<text x="609" y="363" class="value">4</text>
-<text x="274" y="410" class="label" text-anchor="end">defense_opportunity</text>
-<rect x="290" y="386" width="231" height="26" rx="7" fill="#2563eb"/>
-<text x="531" y="405" class="value">3</text>
-<text x="274" y="452" class="label" text-anchor="end">cost_pressure</text>
-<rect x="290" y="428" width="154" height="26" rx="7" fill="#0891b2"/>
-<text x="454" y="447" class="value">2</text>
-<text x="274" y="494" class="label" text-anchor="end">supply_chain_risk</text>
-<rect x="290" y="470" width="154" height="26" rx="7" fill="#16a34a"/>
-<text x="454" y="489" class="value">2</text>
+<text x="918" y="111" class="value">10</text>
+<text x="274" y="158" class="label" text-anchor="end">security_risk</text>
+<rect x="290" y="134" width="432" height="26" rx="7" fill="#0891b2"/>
+<text x="732" y="153" class="value">7</text>
+<text x="274" y="200" class="label" text-anchor="end">agent_governance</text>
+<rect x="290" y="176" width="370" height="26" rx="7" fill="#16a34a"/>
+<text x="670" y="195" class="value">6</text>
+<text x="274" y="242" class="label" text-anchor="end">regulatory_pressure</text>
+<rect x="290" y="218" width="309" height="26" rx="7" fill="#f59e0b"/>
+<text x="609" y="237" class="value">5</text>
+<text x="274" y="284" class="label" text-anchor="end">enterprise_adoption</text>
+<rect x="290" y="260" width="247" height="26" rx="7" fill="#ef4444"/>
+<text x="547" y="279" class="value">4</text>
+<text x="274" y="326" class="label" text-anchor="end">cost_pressure</text>
+<rect x="290" y="302" width="185" height="26" rx="7" fill="#7c3aed"/>
+<text x="485" y="321" class="value">3</text>
+<text x="274" y="368" class="label" text-anchor="end">defense_opportunity</text>
+<rect x="290" y="344" width="123" height="26" rx="7" fill="#db2777"/>
+<text x="423" y="363" class="value">2</text>
+<text x="274" y="410" class="label" text-anchor="end">developer_opportunity</text>
+<rect x="290" y="386" width="123" height="26" rx="7" fill="#2563eb"/>
+<text x="423" y="405" class="value">2</text>
+<text x="274" y="452" class="label" text-anchor="end">supply_chain_risk</text>
+<rect x="290" y="428" width="123" height="26" rx="7" fill="#0891b2"/>
+<text x="423" y="447" class="value">2</text>
+<text x="274" y="494" class="label" text-anchor="end">technical_breakthrough</text>
+<rect x="290" y="470" width="123" height="26" rx="7" fill="#16a34a"/>
+<text x="423" y="489" class="value">2</text>
 <text x="274" y="536" class="label" text-anchor="end">cost_reduction</text>
-<rect x="290" y="512" width="77" height="26" rx="7" fill="#f59e0b"/>
-<text x="377" y="531" class="value">1</text>
+<rect x="290" y="512" width="61" height="26" rx="7" fill="#f59e0b"/>
+<text x="361" y="531" class="value">1</text>
 <text x="274" y="578" class="label" text-anchor="end">open_source_momentum</text>
-<rect x="290" y="554" width="77" height="26" rx="7" fill="#ef4444"/>
-<text x="377" y="573" class="value">1</text>
-<text x="274" y="620" class="label" text-anchor="end">technical_breakthrough</text>
-<rect x="290" y="596" width="77" height="26" rx="7" fill="#7c3aed"/>
-<text x="377" y="615" class="value">1</text>
+<rect x="290" y="554" width="61" height="26" rx="7" fill="#ef4444"/>
+<text x="361" y="573" class="value">1</text>
 </svg>

@@ -92,36 +92,25 @@ ai-news-analysis/
 
 ## Schema 设计
 
-`agent/schema.json` 是日报生成的核心数据契约。它不追求完整复刻新闻全文，而是围绕日报所需的事件理解、排序、溯源和分析能力进行字段设计。
+`agent/schema.json` 定义 `structured_data.json` 的事件级字段。每条记录对应一个事件，而不是一篇新闻。
 
-核心原则：
+| 字段 | 说明 |
+| --- | --- |
+| `event_id` | 事件唯一 ID，用于后续引用和排序。 |
+| `event_name` | 事件标题，概括主体、动作和对象。 |
+| `event_description` | 事件事实描述，说明发生了什么。 |
+| `event_date` | 事件日期；无法确认时使用新闻发布时间。 |
+| `event_type` | 事件类型，用于日报概览和事件类型分布图。 |
+| `topic` | 事件所属主题，用于主题统计和可视化。 |
+| `entities` | 事件涉及的公司、模型、产品、论文、政策、人物等对象。 |
+| `source_news_ids` | 支撑该事件的原始新闻 ID；多篇新闻可合并到同一事件。 |
+| `key_points` | 事件关键点，用于 Top 事件摘要和结构化事件表。 |
+| `importance` | 重要性评分，包括影响力、来源可信度、新颖性、相关性、紧急度和总分。 |
+| `signals` | 风险或机会信号，例如安全风险、监管压力、企业采用、开源动量等。 |
+| `why_it_matters` | 事件重要性的解释，用于日报中的深度分析。 |
+| `evidence` | 支撑结构化判断的证据片段，记录来源新闻、片段文本和用途。 |
 
-- 事件粒度：以 `event` 为单位，服务 Top 事件和深度分析，避免按宽泛 topic 聚合。
-- 字段收敛：用 `entities` 统一表达公司、模型、产品、论文、政策等对象，减少大量稀疏字段。
-- 证据可追溯：用 `source_news_ids` 和 `evidence` 连接结构化事件与原始新闻。
-- 分析可复用：用 `key_points`、`why_it_matters` 和 `signals` 支撑日报中的摘要、解释和风险机会判断。
-- 排序可控：用 `importance` 的多维评分支持 Top 事件选择，`total_score` 由代码重新计算。
-- 统计友好：用 `event_type`、`topic` 和 `signals` 支持概览统计和图表生成。
-
-主要字段：
-
-```text
-event_id
-event_name
-event_description
-event_date
-event_type
-topic
-entities
-source_news_ids
-key_points
-importance
-signals
-why_it_matters
-evidence
-```
-
-其中 `importance` 包含 `impact_score`、`source_score`、`novelty_score`、`relevance_score`、`urgency_score` 和 `total_score`。LLM 负责给出分项判断和理由，代码负责修正总分并完成排序，降低同分和算分错误导致的不稳定。
+`importance.total_score` 会由代码根据各维度评分重新计算，避免模型算分错误。Top 事件排序也由代码完成，而不是直接依赖 LLM 自己排序。
 
 ## LLM 与代码分工
 

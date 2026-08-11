@@ -109,6 +109,33 @@ data/processed/structured_data.json
 - 风险或机会信号；
 - 证据片段。
 
+#### Schema 设计
+
+`agent/schema.json` 定义的是日报生成所需的最终结构化数据。它的基本单位是 **event**，而不是单篇新闻或 topic。这样设计是因为日报中的 Top 重要事件、深度分析和风险机会判断都应该围绕“发生了什么事”展开，而不是围绕某个宽泛主题做聚合。
+
+一个 event 主要由几类字段组成：
+
+- 基础描述字段：`event_id`、`event_name`、`event_description`、`event_date`，用于明确事件本身。
+- 分类字段：`event_type` 和 `topic`，用于后续统计分布和生成可视化图表。
+- 实体字段：`entities`，记录事件涉及的公司、模型、产品、论文、政策等对象。
+- 溯源字段：`source_news_ids` 和 `evidence`，说明这个事件由哪些新闻支持，以及哪些文本片段支撑了事件描述、关键点和重要性判断。
+- 日报分析字段：`key_points`、`why_it_matters` 和 `signals`，直接服务于日报中的重点事件摘要、深度分析和风险/机会判断。
+- 排序字段：`importance`，由 `impact_score`、`source_score`、`novelty_score`、`relevance_score`、`urgency_score` 和 `total_score` 组成，用于筛选 Top 事件。
+
+这里没有设计过多可选字段，例如 `related_products`、`related_companies` 这类字段没有单独拆出来，而是统一放进 `entities`。这样 schema 更简单，也能覆盖不同类型事件：有些事件涉及产品，有些涉及政策、论文、基础设施或商业策略，如果为每种情况都加专门字段，反而会让结构变复杂且经常为空。
+
+`importance.total_score` 不是让模型自由决定的最终排序依据。LLM 会给出各维度评分和理由，代码会重新计算并修正 `total_score`，再结合事件日期、来源数量等确定性规则排序，降低同分或模型算错分带来的不稳定。
+
+整体来说，schema 的目标不是尽可能完整地描述新闻，而是为日报生成保留最必要的结构化信息：
+
+```text
+能说明事件是什么
+能追溯事件来自哪里
+能判断事件为什么重要
+能支持 Top 事件排序
+能支持统计和可视化
+```
+
 ### 4. 日报生成
 
 第三步使用：

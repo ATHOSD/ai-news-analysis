@@ -2,19 +2,6 @@
 
 AI News Analysis 是一个面向 AI 行业新闻的结构化分析与日报生成系统。项目将原始新闻处理拆分为标准化、事件抽取、报告生成和可视化四个阶段，通过 LLM 完成语义理解，通过代码完成流程编排、数据校验和确定性统计。
 
-```mermaid
-flowchart LR
-    A["Raw News<br/>data/raw/raw_news.json"] --> B["Normalize<br/>prompt: normalize_news.md"]
-    B --> C["Normalized Records<br/>data/processed/normalized_data.json"]
-    C --> D["Extract Events<br/>schema.json + extract_structured_data.md"]
-    D --> E["Structured Events<br/>data/processed/structured_data.json"]
-    E --> F["Generate Report<br/>generate_daily_report.md"]
-    E --> G["Generate Visualizations<br/>src/visualize.py"]
-    F --> H["Daily Report<br/>data/processed/daily_report.md"]
-    G --> I["SVG Figures<br/>data/processed/figures/*.svg"]
-    I --> H
-```
-
 ## 核心设计
 
 项目采用 **schema-driven workflow agent**，而不是完全自主规划型 agent。

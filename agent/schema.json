@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI News Structured Data",
+  "description": "Schema for the final structured event data used by the AI daily insight report.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "event_id",
+      "event_name",
+      "event_description",
+      "event_date",
+      "event_type",
+      "topic",
+      "entities",
+      "source_news_ids",
+      "key_points",
+      "importance",
+      "signals",
+      "why_it_matters",
+      "evidence"
+    ],
+    "properties": {
+      "event_id": {
+        "type": "string",
+        "description": "Stable event id used to merge multiple news items describing the same event."
+      },
+      "event_name": {
+        "type": "string",
+        "description": "Short event-level title: main subject + action + object."
+      },
+      "event_description": {
+        "type": "string",
+        "description": "One or two factual sentences describing what happened."
+      },
+      "event_date": {
+        "type": "string",
+        "format": "date",
+        "description": "Date of the event. Use the news publish date when the event date is unclear."
+      },
+      "event_type": {
+        "type": "string",
+        "enum": [
+          "model_update",
+          "product_update",
+          "agent_platform",
+          "security_release",
+          "security_incident",
+          "security_analysis",
+          "ai_infrastructure",
+          "enterprise_adoption",
+          "business_restructuring",
+          "market_competition",
+          "open_source",
+          "research",
+          "policy_regulation"
+        ]
+      },
+      "topic": {
+        "type": "string",
+        "enum": [
+          "AI agent",
+          "AI cybersecurity",
+          "enterprise AI",
+          "model capability",
+          "AI infrastructure",
+          "multimodal training",
+          "voice AI",
+          "AI business",
+          "open-source ecosystem",
+          "agent evaluation",
+          "AI policy"
+        ]
+      },
+      "entities": {
+        "type": "array",
+        "description": "Organizations, products, models, projects, papers, platforms, policies, or strategies involved in the event.",
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "type", "role"],
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string",
+              "enum": [
+                "company",
+                "research_org",
+                "product",
+                "model",
+                "project",
+                "paper",
+                "platform",
+                "person",
+                "policy",
+                "business_strategy"
+              ]
+            },
+            "role": {
+              "type": "string",
+              "description": "Role in this event, such as publisher, subject, developer, affected_party, method, or platform."
+            }
+          }
+        }
+      },
+      "source_news_ids": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "string"
+        },
+        "description": "Ids of standardized news records that support this event."
+      },
+      "key_points": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 4,
+        "items": {
+          "type": "string"
+        }
+      },
+      "importance": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "impact_score",
+          "source_score",
+          "novelty_score",
+          "relevance_score",
+          "urgency_score",
+          "total_score",
+          "reason"
+        ],
+        "properties": {
+          "impact_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "source_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "novelty_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "relevance_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "urgency_score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "total_score": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 25
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      },
+      "signals": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": [
+            "security_risk",
+            "defense_opportunity",
+            "agent_governance",
+            "developer_opportunity",
+            "enterprise_adoption",
+            "cost_reduction",
+            "cost_pressure",
+            "competition",
+            "business_model_shift",
+            "supply_chain_risk",
+            "open_source_momentum",
+            "regulatory_pressure",
+            "technical_breakthrough"
+          ]
+        }
+      },
+      "why_it_matters": {
+        "type": "string",
+        "description": "Why this event matters for the daily report."
+      },
+      "evidence": {
+        "type": "array",
+        "minItems": 1,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["news_id", "text", "used_for"],
+          "properties": {
+            "news_id": {
+              "type": "string"
+            },
+            "text": {
+              "type": "string"
+            },
+            "used_for": {
+              "type": "string",
+              "enum": [
+                "event_description",
+                "key_points",
+                "importance",
+                "why_it_matters",
+                "risk_or_opportunity"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

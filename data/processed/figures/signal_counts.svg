@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="712" viewBox="0 0 980 712">
+<style>
+  .bg { fill: #f8fafc; }
+  .title { font: 700 26px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+  .label { font: 500 15px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #334155; }
+  .value { font: 700 15px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+  .axis { font: 500 13px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #64748b; }
+  .grid-strong { stroke: #cbd5e1; stroke-width: 1.2; }
+</style>
+<rect class="bg" x="0" y="0" width="980" height="712" rx="24"/>
+<text x="32" y="44" class="title">Risk And Opportunity Signals</text>
+<text x="290" y="684" class="axis">Mentions</text>
+<line x1="290" y1="68" x2="290" y2="654" class="grid-strong"/>
+<text x="32" y="116" class="label">agent_governance</text>
+<rect x="290" y="92" width="618" height="26" rx="7" fill="#2563eb"/>
+<text x="918" y="111" class="value">8</text>
+<text x="32" y="158" class="label">competition</text>
+<rect x="290" y="134" width="618" height="26" rx="7" fill="#0891b2"/>
+<text x="918" y="153" class="value">8</text>
+<text x="32" y="200" class="label">security_risk</text>
+<rect x="290" y="176" width="540" height="26" rx="7" fill="#16a34a"/>
+<text x="840" y="195" class="value">7</text>
+<text x="32" y="242" class="label">business_model_shift</text>
+<rect x="290" y="218" width="386" height="26" rx="7" fill="#f59e0b"/>
+<text x="686" y="237" class="value">5</text>
+<text x="32" y="284" class="label">developer_opportunity</text>
+<rect x="290" y="260" width="386" height="26" rx="7" fill="#ef4444"/>
+<text x="686" y="279" class="value">5</text>
+<text x="32" y="326" class="label">regulatory_pressure</text>
+<rect x="290" y="302" width="386" height="26" rx="7" fill="#7c3aed"/>
+<text x="686" y="321" class="value">5</text>
+<text x="32" y="368" class="label">enterprise_adoption</text>
+<rect x="290" y="344" width="309" height="26" rx="7" fill="#db2777"/>
+<text x="609" y="363" class="value">4</text>
+<text x="32" y="410" class="label">defense_opportunity</text>
+<rect x="290" y="386" width="231" height="26" rx="7" fill="#2563eb"/>
+<text x="531" y="405" class="value">3</text>
+<text x="32" y="452" class="label">cost_pressure</text>
+<rect x="290" y="428" width="154" height="26" rx="7" fill="#0891b2"/>
+<text x="454" y="447" class="value">2</text>
+<text x="32" y="494" class="label">supply_chain_risk</text>
+<rect x="290" y="470" width="154" height="26" rx="7" fill="#16a34a"/>
+<text x="454" y="489" class="value">2</text>
+<text x="32" y="536" class="label">cost_reduction</text>
+<rect x="290" y="512" width="77" height="26" rx="7" fill="#f59e0b"/>
+<text x="377" y="531" class="value">1</text>
+<text x="32" y="578" class="label">open_source_momentum</text>
+<rect x="290" y="554" width="77" height="26" rx="7" fill="#ef4444"/>
+<text x="377" y="573" class="value">1</text>
+<text x="32" y="620" class="label">technical_breakthrough</text>
+<rect x="290" y="596" width="77" height="26" rx="7" fill="#7c3aed"/>
+<text x="377" y="615" class="value">1</text>
+</svg>

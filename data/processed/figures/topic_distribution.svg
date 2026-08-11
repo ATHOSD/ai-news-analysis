@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="544" viewBox="0 0 980 544">
+<style>
+  .bg { fill: #f8fafc; }
+  .title { font: 700 26px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+  .label { font: 500 15px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #334155; }
+  .value { font: 700 15px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #0f172a; }
+  .axis { font: 500 13px "Avenir Next", "Helvetica Neue", Arial, sans-serif; fill: #64748b; }
+  .grid-strong { stroke: #cbd5e1; stroke-width: 1.2; }
+</style>
+<rect class="bg" x="0" y="0" width="980" height="544" rx="24"/>
+<text x="32" y="44" class="title">Topic Distribution</text>
+<text x="290" y="516" class="axis">Events</text>
+<line x1="290" y1="68" x2="290" y2="486" class="grid-strong"/>
+<text x="32" y="116" class="label">AI cybersecurity</text>
+<rect x="290" y="92" width="618" height="26" rx="7" fill="#2563eb"/>
+<text x="918" y="111" class="value">4</text>
+<text x="32" y="158" class="label">AI business</text>
+<rect x="290" y="134" width="463" height="26" rx="7" fill="#0891b2"/>
+<text x="763" y="153" class="value">3</text>
+<text x="32" y="200" class="label">AI policy</text>
+<rect x="290" y="176" width="463" height="26" rx="7" fill="#16a34a"/>
+<text x="763" y="195" class="value">3</text>
+<text x="32" y="242" class="label">AI infrastructure</text>
+<rect x="290" y="218" width="309" height="26" rx="7" fill="#f59e0b"/>
+<text x="609" y="237" class="value">2</text>
+<text x="32" y="284" class="label">AI agent</text>
+<rect x="290" y="260" width="154" height="26" rx="7" fill="#ef4444"/>
+<text x="454" y="279" class="value">1</text>
+<text x="32" y="326" class="label">enterprise AI</text>
+<rect x="290" y="302" width="154" height="26" rx="7" fill="#7c3aed"/>
+<text x="454" y="321" class="value">1</text>
+<text x="32" y="368" class="label">model capability</text>
+<rect x="290" y="344" width="154" height="26" rx="7" fill="#db2777"/>
+<text x="454" y="363" class="value">1</text>
+<text x="32" y="410" class="label">open-source ecosystem</text>
+<rect x="290" y="386" width="154" height="26" rx="7" fill="#2563eb"/>
+<text x="454" y="405" class="value">1</text>
+<text x="32" y="452" class="label">voice AI</text>
+<rect x="290" y="428" width="154" height="26" rx="7" fill="#0891b2"/>
+<text x="454" y="447" class="value">1</text>
+</svg>

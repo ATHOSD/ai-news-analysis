@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -340,9 +341,14 @@ def append_visualization_links(report_path: Path, figures: list[Path]) -> None:
     lines = ["", marker, ""]
     for figure in figures:
         relative_path = figure.relative_to(report_path.parent)
+        version = file_cache_key(figure)
         title = figure.stem.replace("_", " ").title()
-        lines.extend([f"![{title}]({relative_path.as_posix()})", ""])
+        lines.extend([f"![{title}]({relative_path.as_posix()}?v={version})", ""])
     write_text(report_path, report + "\n" + "\n".join(lines))
+
+
+def file_cache_key(path: Path) -> str:
+    return hashlib.sha1(path.read_bytes()).hexdigest()[:8]
 
 
 def reorder_report_sections(markdown: str) -> str:

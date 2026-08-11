@@ -125,10 +125,10 @@
 
 ## 可视化图表
 
-![Event Type Distribution](figures/event_type_distribution.svg)
+![Event Type Distribution](figures/event_type_distribution.svg?v=88947be7)
 
-![Topic Distribution](figures/topic_distribution.svg)
+![Topic Distribution](figures/topic_distribution.svg?v=e440437f)
 
-![Importance Ranking](figures/importance_ranking.svg)
+![Importance Ranking](figures/importance_ranking.svg?v=f1c65369)
 
-![Signal Counts](figures/signal_counts.svg)
+![Signal Counts](figures/signal_counts.svg?v=bba366d6)

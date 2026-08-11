@@ -38,6 +38,8 @@ ai-news-analysis/
 
 输入：`data/raw/raw_news.json`
 
+Prompt：[normalize_news.md](agent/prompts/normalize_news.md)
+
 输出：`data/processed/normalized_data.json`
 
 该步骤将原始新闻整理为统一的事实记录，主要包括：
@@ -50,6 +52,8 @@ ai-news-analysis/
 
 输入：`data/processed/normalized_data.json`
 
+Prompt：[extract_structured_data.md](agent/prompts/extract_structured_data.md)
+
 输出：`data/processed/structured_data.json`
 
 结构化单位是 **event**，不是 article。多篇新闻如果描述同一主体、同一动作和同一结果，会被合并为一个事件，并通过 `source_news_ids` 记录来源映射。
@@ -57,6 +61,8 @@ ai-news-analysis/
 ### 3. 日报生成
 
 输入：`data/processed/structured_data.json`
+
+Prompt：[generate_daily_report.md](agent/prompts/generate_daily_report.md)
 
 输出：`data/processed/daily_report.md`
 
@@ -103,25 +109,6 @@ ai-news-analysis/
 | `evidence` | 支撑结构化判断的证据片段，记录来源新闻、片段文本和用途。 |
 
 `importance.total_score` 会由代码根据各维度评分重新计算，避免模型算分错误。Top 事件排序也由代码完成，而不是直接依赖 LLM 自己排序。
-
-## LLM 与代码分工
-
-LLM 负责：
-
-- 新闻事实标准化
-- 同事件合并判断
-- 事件分类与主题识别
-- 重要性理由生成
-- 日报自然语言生成
-
-代码负责：
-
-- workflow 编排
-- 本地文件读写
-- LLM API 调用
-- JSON 解析与 schema 校验
-- 统计、排序和可视化
-- 输出文件落盘
 
 ## 运行方式
 
